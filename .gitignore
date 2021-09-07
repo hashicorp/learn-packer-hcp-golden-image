@@ -1,0 +1,16 @@
+# SSH keys
+learn-packer
+learn-packer.pub
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+*.d.ts
+*.js
+node_modules
+cdktf.out
+.gen

@@ -61,36 +61,6 @@ resource "aws_instance" "loki" {
   }
 }
 
-// resource "aws_instance" "base" {
-//   ami           = local.image_golden_us_east_2.image_id
-//   instance_type = "t2.micro"
-//   subnet_id     = aws_subnet.subnet_public.id
-//   vpc_security_group_ids = [
-//     aws_security_group.ssh.id,
-//     aws_security_group.allow_egress.id,
-//     aws_security_group.promtail.id,
-//     aws_security_group.hashicups.id,
-//   ]
-//   associate_public_ip_address = true
-//   // user_data                   = data.template_file.user_data.rendered
-
-//   tags = {
-//     Name = "Learn-Packer-Base"
-//   }
-
-//   depends_on = [
-//     aws_instance.loki
-//   ]
-
-//   provisioner "remote-exec" {
-//     inline = [
-//       "sed -i 's/WILL_BE_REPLACED_BY_TF/${aws_instance.loki.public_ip}/g' /opt/promtail/promtail.yaml",
-//       "sed -i 's/WILL_BE_REPLACED_BY_TF/${aws_instance.loki.public_ip}/g' /etc/docker/daemon.json"
-//     ]
-//   }
-// }
-
-
 resource "aws_instance" "hashicups" {
   ami           = local.image_hashicups_us_east_2.image_id
   instance_type = "t2.micro"

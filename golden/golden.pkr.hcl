@@ -100,8 +100,6 @@ This is a golden image base built on top of ubuntu 20.04.
     EOT
 
     labels = {
-      "foo-version"     = "3.4.0",
-      "foo"             = "bar",
       "ubuntu-version"  = "20.04"
     }
   }

@@ -74,16 +74,12 @@ build {
 
   # HCP Packer settings
   hcp_packer_registry {
-    # Variables not allowed?
-    # bucket_name = "learn-packer-hcp-loki-${source.name}"
     bucket_name = "learn-packer-hcp-loki-image"
     description = <<EOT
 This is an image for loki built on top of ubuntu 20.04.
     EOT
 
     labels = {
-      "foo-version"     = "3.4.0",
-      "foo"             = "bar",
       "ubuntu-version"  = "20.04"
     }
   }

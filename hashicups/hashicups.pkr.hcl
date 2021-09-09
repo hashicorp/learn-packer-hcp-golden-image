@@ -13,7 +13,7 @@ variable "ami_prefix" {
 }
 
 data "packer-image-iteration" "hardened-source" {
-  bucket_name = "learn-packer-hcp-golden-base-tonino"
+  bucket_name = "learn-packer-hcp-golden-base-image"
   channel = "production"
 }
 
@@ -82,7 +82,7 @@ build {
   hcp_packer_registry {
     # Variables not allowed?
     # bucket_name = "learn-packer-hcp-loki-${source.name}"
-    bucket_name = "learn-packer-hcp-hashicups-tonino"
+    bucket_name = "learn-packer-hcp-hashicups-image"
     description = <<EOT
 This is an image for hashicups built on top of a golden base image.
     EOT

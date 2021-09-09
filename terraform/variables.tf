@@ -19,12 +19,12 @@ variable "region" {
 
 variable "hcp_bucket_loki" {
   description = "HCP Packer bucket name for loki image"
-  default     = "learn-packer-hcp-loki-tonino"
+  default     = "learn-packer-hcp-loki-image"
 }
 
 variable "hcp_bucket_hashicups" {
   description = "HCP Packer bucket name for base golden image"
-  default     = "learn-packer-hcp-hashicups-tonino"
+  default     = "learn-packer-hcp-hashicups-image"
 }
 
 variable "hcp_channel" {

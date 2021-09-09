@@ -57,7 +57,7 @@ resource "aws_instance" "loki" {
   // user_data                   = data.template_file.user_data.rendered
 
   tags = {
-    Name = "LokiGrafanaTonino"
+    Name = "Learn-Packer-LokiGrafana"
   }
 }
 
@@ -105,7 +105,7 @@ resource "aws_instance" "hashicups" {
   // user_data                   = data.template_file.user_data.rendered
 
   tags = {
-    Name = "Learn-Packer-HashiCups-Tonino"
+    Name = "Learn-Packer-HashiCups"
   }
 
   depends_on = [

@@ -12,13 +12,6 @@ variable "ami_prefix" {
   default = "learn-packer-hcp-loki-server"
 }
 
-# TODO: Externalize this and the one from golden into a parent pkrvars file
-# parent.auto.pkrvars.hcl
-variable "hcp_packer_suffix" {
-  type    = string
-  default = "tonino"
-}
-
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
@@ -83,7 +76,7 @@ build {
   hcp_packer_registry {
     # Variables not allowed?
     # bucket_name = "learn-packer-hcp-loki-${source.name}"
-    bucket_name = "learn-packer-hcp-loki-tonino"
+    bucket_name = "learn-packer-hcp-loki-image"
     description = <<EOT
 This is an image for loki built on top of ubuntu 20.04.
     EOT

@@ -39,6 +39,7 @@ resource "aws_instance" "loki" {
   }
 }
 
+/*
 resource "aws_instance" "hashicups" {
   ami           = local.image_hashicups_us_east_2.image_id
   instance_type = "t2.micro"
@@ -58,20 +59,5 @@ resource "aws_instance" "hashicups" {
   depends_on = [
     aws_instance.loki
   ]
-
-  provisioner "remote-exec" {
-    connection {
-      type        = "ssh"
-      user        = "terraform"
-      private_key = "${file("../learn-packer")}"
-      host        = self.public_ip
-    }
-    inline = [
-      "sudo sed -i 's/WILL_BE_REPLACED_BY_TF/${aws_instance.loki.public_ip}/g' /opt/promtail/promtail.yaml",
-      "sudo sed -i 's/WILL_BE_REPLACED_BY_TF/${aws_instance.loki.public_ip}/g' /etc/docker/daemon.json",
-      "sudo systemctl restart docker",
-      "sudo cd /home/ubuntu && sudo docker-compose up -d",
-      "sudo cd /opt/promtail && sudo nohup ./promtail-linux-amd64 -config.file=./promtail.yaml &"
-    ]
-  }
 }
+*/

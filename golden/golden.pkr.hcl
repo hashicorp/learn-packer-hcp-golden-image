@@ -100,7 +100,8 @@ This is a golden image base built on top of ubuntu 20.04.
     EOT
 
     labels = {
-      "ubuntu-version"  = "20.04"
+      "hashicorp-learn"       = "learn-packer-hcp-golden-image",
+      "ubuntu-version"        = "20.04"
     }
   }
 }

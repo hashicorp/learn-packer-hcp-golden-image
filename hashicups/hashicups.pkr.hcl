@@ -86,7 +86,8 @@ This is an image for hashicups built on top of a golden base image.
     EOT
 
     labels = {
-      "ubuntu-version"  = "20.04"
+      "hashicorp-learn"       = "learn-packer-hcp-golden-image",
+      "ubuntu-version"        = "20.04"
     }
   }
 }

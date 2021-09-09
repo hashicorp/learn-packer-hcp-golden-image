@@ -17,44 +17,58 @@ This repo is a companion repo to the [Build a Golden Image Pipeline](https://lea
 - HCP Packer service principal ID/secret set as environment variables
 
 ## Instructions
+
 1. Build golden image
-```
-cd golden
-packer init .
-packer build .
-```
+
+    ```
+    cd golden
+    packer init .
+    packer build .
+    ```
+  
 2. Add `production` channel for golden image
-- Navigate to HCP Packer and click on your golden image ID, click the Channels link on the left of the page, and click on the `+ New Channel` button.
-- Enter `production` as the Channel name, choose your image from the dropdown, and click the `Create channel` button.
+    - Navigate to HCP Packer and click on your golden image ID, click the Channels link on the left of the page, and click on the `+ New Channel` button.
+    - Enter `production` as the Channel name, choose your image from the dropdown, and click the `Create channel` button.
+
 3. Build Loki/Grafana image
-```
-cd loki
-packer init .
-packer build .
-```
+
+    ```
+    cd loki
+    packer init .
+    packer build .
+    ```
+
 4. Build Hashicups image
-```
-cd hashicups
-packer init .
-packer build .
-```
+
+    ```
+    cd hashicups
+    packer init .
+    packer build .
+    ```
+  
 5. Add `production` channel for Hashicups image
-- Navigate to HCP Packer and click on your Hashicups image ID, click the Channels link on the left of the page, and click on the `+ New Channel` button.
-- Enter `production` as the Channel name, choose your image from the dropdown, and click the `Create channel` button.
+    - Navigate to HCP Packer and click on your Hashicups image ID, click the Channels link on the left of the page, and click on the `+ New Channel` button.
+    - Enter `production` as the Channel name, choose your image from the dropdown, and click the `Create channel` button.
+
 6. Create instances in AWS
-```
-cd terraform
-terraform apply -auto-approve
-```
+
+    ```
+    cd terraform
+    terraform apply -auto-approve
+    ```
+  
 7. Setup Grafana
-- Get the value of `loki_ip` from the Terraform output and visit `http://<loki-ip>:3000` to see the Grafana UI. 
-- Login with `admin:admin`.
-- Go to `http://<loki-ip>:3000/datasources`, click the `Add data source` button, and choose `Loki`.
-- In the `URL` field on the next page, enter `http://<loki-ip>:3100`, and click the `Save & test` button at the bottom of the page.
+    - Get the value of `loki_ip` from the Terraform output and visit `http://<loki-ip>:3000` to see the Grafana UI. 
+    - Login with `admin:admin`.
+    - Go to `http://<loki-ip>:3000/datasources`, click the `Add data source` button, and choose `Loki`.
+    - In the `URL` field on the next page, enter `http://<loki-ip>:3100`, and click the `Save & test` button at the bottom of the page.
+
 8. Query Hashicups API
-```
-cd terraform
-./hashicups-query.sh
-```
-- Go to the Explore page in Grafana (`http://<loki-ip>:3000/explore`), choose `Loki` from the dropdown at the top of the page, enter the following in the query field just below it, and click the `Run query` button at the top right of the page.
-`{container_name=~"ubuntu_api_1|ubuntu_db_1"}`
+
+    ```
+    cd terraform
+    ./hashicups-query.sh
+    ```
+
+    - Go to the Explore page in Grafana (`http://<loki-ip>:3000/explore`), choose `Loki` from the dropdown at the top of the page, enter the following in the query field just below it, and click the `Run query` button at the top right of the page.
+    `{container_name=~"ubuntu_api_1|ubuntu_db_1"}`

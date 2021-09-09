@@ -11,7 +11,7 @@ data "hcp_packer_image_iteration" "hashicups" {
 }
 
 locals {
-  # AMI for loki and hashicups image
+  # AMI for Loki and HashiCups image
   loki_images          = flatten(flatten(data.hcp_packer_image_iteration.loki.builds[*].images[*]))
   image_loki_us_east_2 = [for x in local.loki_images: x if x.region == "us-east-2"][0]
 
@@ -22,28 +22,8 @@ locals {
 provider "aws" {
   region = var.region
 }
-data "aws_ami" "ubuntu" {
-  most_recent = true
-
-  filter {
-    name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-*20*-amd64-server-*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-
-  owners = ["099720109477"] # Canonical
-}
-
-// data "template_file" "user_data" {
-//   template = file("./add-ssh.yaml")
-// }
 
 resource "aws_instance" "loki" {
-  // ami           = data.aws_ami.ubuntu.id
   ami           = local.image_loki_us_east_2.image_id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet_public.id
@@ -53,8 +33,6 @@ resource "aws_instance" "loki" {
     aws_security_group.loki_grafana.id,
   ]
   associate_public_ip_address = true
-  // user_data                   = file("./start_loki_grafana.sh")
-  // user_data                   = data.template_file.user_data.rendered
 
   tags = {
     Name = "Learn-Packer-LokiGrafana"
@@ -72,7 +50,6 @@ resource "aws_instance" "hashicups" {
     aws_security_group.hashicups.id,
   ]
   associate_public_ip_address = true
-  // user_data                   = data.template_file.user_data.rendered
 
   tags = {
     Name = "Learn-Packer-HashiCups"

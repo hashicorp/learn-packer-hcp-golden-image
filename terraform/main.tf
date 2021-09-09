@@ -1,3 +1,24 @@
+provider "hcp" {}
+
+data "hcp_packer_image_iteration" "loki" {
+  bucket  = var.hcp_bucket_loki
+  channel = var.hcp_channel
+}
+
+data "hcp_packer_image_iteration" "hashicups" {
+  bucket  = var.hcp_bucket_hashicups
+  channel = var.hcp_channel
+}
+
+locals {
+  # AMI for loki and hashicups image
+  loki_images          = flatten(flatten(data.hcp_packer_image_iteration.loki.builds[*].images[*]))
+  image_loki_us_east_2 = [for x in local.loki_images: x if x.region == "us-east-2"][0]
+
+  hashicups_images          = flatten(flatten(data.hcp_packer_image_iteration.hashicups.builds[*].images[*]))
+  image_hashicups_us_east_2 = [for x in local.hashicups_images: x if x.region == "us-east-2"][0]
+}
+
 provider "aws" {
   region = var.region
 }
@@ -23,7 +44,7 @@ data "aws_ami" "ubuntu" {
 
 resource "aws_instance" "loki" {
   // ami           = data.aws_ami.ubuntu.id
-  ami           = "ami-028fb9cd5f4fd31d5"
+  ami           = local.image_loki_us_east_2.image_id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet_public.id
   vpc_security_group_ids = [
@@ -36,31 +57,42 @@ resource "aws_instance" "loki" {
   // user_data                   = data.template_file.user_data.rendered
 
   tags = {
-    Name = "LokiGrafana"
+    Name = "LokiGrafanaTonino"
   }
 }
 
-resource "aws_instance" "base" {
-  ami           = "ami-0948be65e4c29bce3"
-  instance_type = "t2.micro"
-  subnet_id     = aws_subnet.subnet_public.id
-  vpc_security_group_ids = [
-    aws_security_group.ssh.id,
-    aws_security_group.allow_egress.id,
-    aws_security_group.promtail.id,
-    aws_security_group.hashicups.id,
-  ]
-  associate_public_ip_address = true
-  // user_data                   = data.template_file.user_data.rendered
+// resource "aws_instance" "base" {
+//   ami           = local.image_golden_us_east_2.image_id
+//   instance_type = "t2.micro"
+//   subnet_id     = aws_subnet.subnet_public.id
+//   vpc_security_group_ids = [
+//     aws_security_group.ssh.id,
+//     aws_security_group.allow_egress.id,
+//     aws_security_group.promtail.id,
+//     aws_security_group.hashicups.id,
+//   ]
+//   associate_public_ip_address = true
+//   // user_data                   = data.template_file.user_data.rendered
 
-  tags = {
-    Name = "Learn-Packer-Base"
-  }
-}
+//   tags = {
+//     Name = "Learn-Packer-Base"
+//   }
+
+//   depends_on = [
+//     aws_instance.loki
+//   ]
+
+//   provisioner "remote-exec" {
+//     inline = [
+//       "sed -i 's/WILL_BE_REPLACED_BY_TF/${aws_instance.loki.public_ip}/g' /opt/promtail/promtail.yaml",
+//       "sed -i 's/WILL_BE_REPLACED_BY_TF/${aws_instance.loki.public_ip}/g' /etc/docker/daemon.json"
+//     ]
+//   }
+// }
 
 
 resource "aws_instance" "hashicups" {
-  ami           = "ami-09f1adfa86f3adc23"
+  ami           = local.image_hashicups_us_east_2.image_id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet_public.id
   vpc_security_group_ids = [
@@ -73,6 +105,26 @@ resource "aws_instance" "hashicups" {
   // user_data                   = data.template_file.user_data.rendered
 
   tags = {
-    Name = "Learn-Packer-HashiCups"
+    Name = "Learn-Packer-HashiCups-Tonino"
+  }
+
+  depends_on = [
+    aws_instance.loki
+  ]
+
+  provisioner "remote-exec" {
+    connection {
+      type        = "ssh"
+      user        = "terraform"
+      private_key = "${file("../learn-packer")}"
+      host        = self.public_ip
+    }
+    inline = [
+      "sudo sed -i 's/WILL_BE_REPLACED_BY_TF/${aws_instance.loki.public_ip}/g' /opt/promtail/promtail.yaml",
+      "sudo sed -i 's/WILL_BE_REPLACED_BY_TF/${aws_instance.loki.public_ip}/g' /etc/docker/daemon.json",
+      "sudo systemctl restart docker",
+      "sudo cd /home/ubuntu && sudo docker-compose up -d",
+      "sudo cd /opt/promtail && sudo nohup ./promtail-linux-amd64 -config.file=./promtail.yaml &"
+    ]
   }
 }

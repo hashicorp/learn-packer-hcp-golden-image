@@ -12,15 +12,22 @@ variable "ami_prefix" {
   default = "learn-packer-hcp-hashicups"
 }
 
+data "packer-image-iteration" "hardened-source" {
+  bucket_name = "learn-packer-hcp-golden-base-tonino"
+  channel = "production"
+}
+
 locals {
-  timestamp = regex_replace(timestamp(), "[- TZ:]", "")
+  timestamp           = regex_replace(timestamp(), "[- TZ:]", "")
+  golden-base-image   = [ for image in flatten(data.packer-image-iteration.hardened-source.builds[*].images[*]): image.image_id ][0]
 }
 
 source "amazon-ebs" "hashicups" {
   ami_name      = "${var.ami_prefix}-${local.timestamp}"
   instance_type = "t2.micro"
   region        = "us-east-2"
-  source_ami    = "ami-0848adeeaf368110a"
+  #source_ami    = "ami-0461eca8765a82e3e"
+  source_ami    = local.golden-base-image
   // source_ami_filter {
   //   filters = {
   //     name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
@@ -69,5 +76,21 @@ build {
     inline = [
       "sudo cp /tmp/start-hashicups.sh /var/lib/cloud/scripts/per-boot/start-hashicups.sh",
     ]
+  }
+
+  # HCP Packer settings
+  hcp_packer_registry {
+    # Variables not allowed?
+    # bucket_name = "learn-packer-hcp-loki-${source.name}"
+    bucket_name = "learn-packer-hcp-hashicups-tonino"
+    description = <<EOT
+This is an image for hashicups built on top of a golden base image.
+    EOT
+
+    labels = {
+      "foo-version"     = "3.4.0",
+      "foo"             = "bar",
+      "ubuntu-version"  = "20.04"
+    }
   }
 }

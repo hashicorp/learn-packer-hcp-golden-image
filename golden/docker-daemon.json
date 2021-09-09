@@ -5,7 +5,7 @@
     "no-new-privileges": true,
     "log-driver": "loki",
     "log-opts": {
-        "loki-url": "http://3.138.35.230:3100/loki/api/v1/push",
+        "loki-url": "http://WILL_BE_REPLACED_BY_TF:3100/loki/api/v1/push",
         "loki-batch-size": "400"
     }
 }

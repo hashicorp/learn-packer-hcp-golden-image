@@ -12,6 +12,12 @@ variable "ami_prefix" {
   default = "learn-packer-hcp-golden-image"
 }
 
+# TODO: Externalize this and the one from loki into a parent pkrvars file
+variable "hcp_packer_suffix" {
+  type    = string
+  default = "tonino"
+}
+
 locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
@@ -90,5 +96,19 @@ build {
   # Execute setup script
   provisioner "shell" {
     script = "setup-promtail.sh"
+  }
+
+  # HCP Packer settings
+  hcp_packer_registry {
+    bucket_name = "learn-packer-hcp-golden-base-tonino"
+    description = <<EOT
+This is a golden image base built on top of ubuntu 20.04.
+    EOT
+
+    labels = {
+      "foo-version"     = "3.4.0",
+      "foo"             = "bar",
+      "ubuntu-version"  = "20.04"
+    }
   }
 }

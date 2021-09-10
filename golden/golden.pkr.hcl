@@ -20,6 +20,7 @@ source "amazon-ebs" "base" {
   ami_name      = "${var.ami_prefix}-${local.timestamp}"
   instance_type = "t2.micro"
   region        = "us-east-2"
+  ami_regions   = ["us-east-2", "us-west-2"]
   source_ami_filter {
     filters = {
       name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
@@ -100,8 +101,8 @@ This is a golden image base built on top of ubuntu 20.04.
     EOT
 
     labels = {
-      "hashicorp-learn"       = "learn-packer-hcp-golden-image",
-      "ubuntu-version"        = "20.04"
+      "hashicorp-learn" = "learn-packer-hcp-golden-image",
+      "ubuntu-version"  = "20.04"
     }
   }
 }

@@ -17,10 +17,16 @@ locals {
 
   hashicups_images          = flatten(flatten(data.hcp_packer_image_iteration.hashicups.builds[*].images[*]))
   image_hashicups_us_east_2 = [for x in local.hashicups_images: x if x.region == "us-east-2"][0]
+  image_hashicups_us_west_2 = [for x in local.hashicups_images: x if x.region == "us-west-2"][0]
 }
 
 provider "aws" {
-  region = var.region
+  region = var.region_east
+}
+
+provider "aws" {
+  alias  = "west"
+  region = var.region_west
 }
 
 resource "aws_instance" "loki" {
@@ -40,8 +46,30 @@ resource "aws_instance" "loki" {
 }
 
 /*
-resource "aws_instance" "hashicups" {
+resource "aws_instance" "hashicups_east" {
   ami           = local.image_hashicups_us_east_2.image_id
+  instance_type = "t2.micro"
+  subnet_id     = aws_subnet.subnet_public.id
+  vpc_security_group_ids = [
+    aws_security_group.ssh.id,
+    aws_security_group.allow_egress.id,
+    aws_security_group.promtail.id,
+    aws_security_group.hashicups.id,
+  ]
+  associate_public_ip_address = true
+
+  tags = {
+    Name = "Learn-Packer-HashiCups"
+  }
+
+  depends_on = [
+    aws_instance.loki
+  ]
+}
+
+resource "aws_instance" "hashicups-_west" {
+  provider      = aws.west
+  ami           = local.image_hashicups_us_west_2.image_id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet_public.id
   vpc_security_group_ids = [

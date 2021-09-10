@@ -12,9 +12,14 @@ variable "environment_tag" {
   default     = "Learn"
 }
 
-variable "region" {
-  description = "The region Terraform deploys your instance"
+variable "region_east" {
+  description = "The default region Terraform deploys your instance"
   default     = "us-east-2"
+}
+
+variable "region_west" {
+  description = "The second region Terraform deploys your instance"
+  default     = "us-west-2"
 }
 
 variable "hcp_bucket_loki" {

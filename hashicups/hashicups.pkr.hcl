@@ -26,6 +26,7 @@ source "amazon-ebs" "hashicups" {
   ami_name      = "${var.ami_prefix}-${local.timestamp}"
   instance_type = "t2.micro"
   region        = "us-east-2"
+  ami_regions   = ["us-east-2", "us-west-2"]
   #source_ami    = "ami-0461eca8765a82e3e"
   source_ami    = local.golden-base-image
   // source_ami_filter {

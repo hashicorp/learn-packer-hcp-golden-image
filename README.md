@@ -21,7 +21,7 @@ This repo is a companion repo to the [Build a Golden Image Pipeline](https://lea
 
 1. Build and deploy Loki/Grafana image
     ```
-    cd golden
+    cd loki
     packer init .
     packer build .
 

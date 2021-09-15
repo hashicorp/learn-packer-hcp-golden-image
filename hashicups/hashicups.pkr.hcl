@@ -12,14 +12,15 @@ variable "ami_prefix" {
   default = "learn-packer-hcp-hashicups"
 }
 
-data "packer-image-iteration" "hardened-source" {
+data "packer-image-iteration" "hardened_source" {
   bucket_name = "learn-packer-hcp-golden-base-image"
   channel = "production"
 }
 
 locals {
   timestamp           = regex_replace(timestamp(), "[- TZ:]", "")
-  golden-base-image   = [ for image in flatten(data.packer-image-iteration.hardened-source.builds[*].images[*]): image.image_id ][0]
+  golden_base_image   = flatten(flatten(data.packer-image-iteration.hardened_source.builds[*].images[*]))
+  image_hashicups_us_east_2 = [for x in local.golden_base_image: x if x.region == "us-east-2"][0]
 }
 
 source "amazon-ebs" "hashicups" {
@@ -27,17 +28,7 @@ source "amazon-ebs" "hashicups" {
   instance_type = "t2.micro"
   region        = "us-east-2"
   ami_regions   = ["us-east-2", "us-west-2"]
-  #source_ami    = "ami-0461eca8765a82e3e"
-  source_ami    = local.golden-base-image
-  // source_ami_filter {
-  //   filters = {
-  //     name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
-  //     root-device-type    = "ebs"
-  //     virtualization-type = "hvm"
-  //   }
-  //   most_recent = true
-  //   owners      = ["099720109477"]
-  // }
+  source_ami    = local.image_hashicups_us_east_2.image_id
   ssh_username = "ubuntu"
 }
 

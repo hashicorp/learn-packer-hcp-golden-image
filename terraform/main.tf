@@ -67,7 +67,7 @@ resource "aws_instance" "hashicups_east" {
   ]
 }
 
-resource "aws_instance" "hashicups-_west" {
+resource "aws_instance" "hashicups_west" {
   provider      = aws.west
   ami           = local.image_hashicups_us_west_2.image_id
   instance_type = "t2.micro"

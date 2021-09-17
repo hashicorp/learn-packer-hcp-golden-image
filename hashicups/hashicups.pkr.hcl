@@ -12,15 +12,20 @@ variable "ami_prefix" {
   default = "learn-packer-hcp-hashicups"
 }
 
-data "packer-image-iteration" "hardened_source" {
+data "hcp-packer-iteration" "hardened_source" {
   bucket_name = "learn-packer-hcp-golden-base-image"
   channel = "production"
 }
 
+data "hcp-packer-image" "golden_base" {
+  bucket_name = "learn-packer-hcp-golden-base-image"
+  iteration_id = data.hcp-packer-iteration.hardened_source.id
+  cloud_provider = "aws"
+  region = "us-east-2"
+}
+
 locals {
   timestamp           = regex_replace(timestamp(), "[- TZ:]", "")
-  golden_base_image   = flatten(flatten(data.packer-image-iteration.hardened_source.builds[*].images[*]))
-  image_hashicups_us_east_2 = [for x in local.golden_base_image: x if x.region == "us-east-2"][0]
 }
 
 source "amazon-ebs" "hashicups" {
@@ -28,7 +33,7 @@ source "amazon-ebs" "hashicups" {
   instance_type = "t2.micro"
   region        = "us-east-2"
   ami_regions   = ["us-east-2", "us-west-2"]
-  source_ami    = local.image_hashicups_us_east_2.image_id
+  source_ami    = data.hcp-packer-image.golden_base.id
   ssh_username = "ubuntu"
 }
 

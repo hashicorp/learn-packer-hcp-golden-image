@@ -1,10 +1,19 @@
-variable "cidr_vpc" {
+variable "cidr_vpc_east" {
   description = "CIDR block for the VPC"
   default     = "10.1.0.0/16"
 }
-variable "cidr_subnet" {
+variable "cidr_subnet_east" {
   description = "CIDR block for the subnet"
   default     = "10.1.0.0/24"
+}
+
+variable "cidr_vpc_west" {
+  description = "CIDR block for the VPC"
+  default     = "10.2.0.0/16"
+}
+variable "cidr_subnet_west" {
+  description = "CIDR block for the subnet"
+  default     = "10.2.0.0/24"
 }
 
 variable "environment_tag" {
@@ -13,12 +22,12 @@ variable "environment_tag" {
 }
 
 variable "region_east" {
-  description = "The default region Terraform deploys your instance"
+  description = "The default region where Terraform deploys your resources"
   default     = "us-east-2"
 }
 
 variable "region_west" {
-  description = "The second region Terraform deploys your instance"
+  description = "The second region where Terraform deploys your resources"
   default     = "us-west-2"
 }
 

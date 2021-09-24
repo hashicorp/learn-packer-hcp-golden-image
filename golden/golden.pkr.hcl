@@ -16,11 +16,26 @@ locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
 
-source "amazon-ebs" "base" {
+source "amazon-ebs" "base_east" {
   ami_name      = "${var.ami_prefix}-${local.timestamp}"
   instance_type = "t2.micro"
   region        = "us-east-2"
-  ami_regions   = ["us-east-2", "us-west-2"]
+  source_ami_filter {
+    filters = {
+      name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+      root-device-type    = "ebs"
+      virtualization-type = "hvm"
+    }
+    most_recent = true
+    owners      = ["099720109477"]
+  }
+  ssh_username = "ubuntu"
+}
+
+source "amazon-ebs" "base_west" {
+  ami_name      = "${var.ami_prefix}-${local.timestamp}"
+  instance_type = "t2.micro"
+  region        = "us-west-2"
   source_ami_filter {
     filters = {
       name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
@@ -36,7 +51,8 @@ source "amazon-ebs" "base" {
 build {
   name = "learn-packer-golden"
   sources = [
-    "source.amazon-ebs.base"
+    "source.amazon-ebs.base_east",
+    "source.amazon-ebs.base_west"
   ]
 
   # Add SSH public key

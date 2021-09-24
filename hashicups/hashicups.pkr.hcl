@@ -12,35 +12,50 @@ variable "ami_prefix" {
   default = "learn-packer-hcp-hashicups"
 }
 
-data "hcp-packer-iteration" "hardened_source" {
+data "hcp-packer-iteration" "golden" {
   bucket_name = "learn-packer-hcp-golden-base-image"
   channel = "production"
 }
 
-data "hcp-packer-image" "golden_base" {
+data "hcp-packer-image" "golden_base_east" {
   bucket_name = "learn-packer-hcp-golden-base-image"
-  iteration_id = data.hcp-packer-iteration.hardened_source.id
+  iteration_id = data.hcp-packer-iteration.golden.id
   cloud_provider = "aws"
   region = "us-east-2"
+}
+
+data "hcp-packer-image" "golden_base_west" {
+  bucket_name = "learn-packer-hcp-golden-base-image"
+  iteration_id = data.hcp-packer-iteration.golden.id
+  cloud_provider = "aws"
+  region = "us-west-2"
 }
 
 locals {
   timestamp           = regex_replace(timestamp(), "[- TZ:]", "")
 }
 
-source "amazon-ebs" "hashicups" {
+source "amazon-ebs" "hashicups_east" {
   ami_name      = "${var.ami_prefix}-${local.timestamp}"
   instance_type = "t2.micro"
   region        = "us-east-2"
-  ami_regions   = ["us-east-2", "us-west-2"]
-  source_ami    = data.hcp-packer-image.golden_base.id
+  source_ami    = data.hcp-packer-image.golden_base_east.id
+  ssh_username = "ubuntu"
+}
+
+source "amazon-ebs" "hashicups_west" {
+  ami_name      = "${var.ami_prefix}-${local.timestamp}"
+  instance_type = "t2.micro"
+  region        = "us-west-2"
+  source_ami    = data.hcp-packer-image.golden_base_west.id
   ssh_username = "ubuntu"
 }
 
 build {
   name = "learn-packer-hashicups"
   sources = [
-    "source.amazon-ebs.hashicups"
+    "source.amazon-ebs.hashicups_east",
+    "source.amazon-ebs.hashicups_west"
   ]
 
   # Add SSH public key
@@ -83,8 +98,7 @@ This is an image for hashicups built on top of a golden base image.
     EOT
 
     labels = {
-      "hashicorp-learn"       = "learn-packer-hcp-golden-image",
-      "ubuntu-version"        = "20.04"
+      "hashicorp-learn"       = "learn-packer-hcp-hashicups-image",
     }
   }
 }

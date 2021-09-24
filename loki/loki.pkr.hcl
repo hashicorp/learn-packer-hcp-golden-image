@@ -80,7 +80,7 @@ This is an image for loki built on top of ubuntu 20.04.
     EOT
 
     labels = {
-      "hashicorp-learn"       = "learn-packer-hcp-golden-image",
+      "hashicorp-learn"       = "learn-packer-hcp-loki-image",
       "ubuntu-version"        = "20.04"
     }
   }

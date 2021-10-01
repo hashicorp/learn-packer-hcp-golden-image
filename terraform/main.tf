@@ -1,20 +1,20 @@
 provider "hcp" {}
 
 data "hcp_packer_image_iteration" "loki" {
-  bucket_name  = var.hcp_bucket_loki
-  channel = var.hcp_channel
+  bucket_name = var.hcp_bucket_loki
+  channel     = var.hcp_channel
 }
 
 data "hcp_packer_image" "loki" {
-  bucket_name     = var.hcp_bucket_loki
+  bucket_name    = var.hcp_bucket_loki
   cloud_provider = "aws"
   iteration_id   = data.hcp_packer_image_iteration.loki.id
-  region          = "us-east-2"
+  region         = "us-east-2"
 }
 
 data "hcp_packer_image_iteration" "hashicups" {
-  bucket_name  = var.hcp_bucket_hashicups
-  channel = var.hcp_channel
+  bucket_name = var.hcp_bucket_hashicups
+  channel     = var.hcp_channel
 }
 
 data "hcp_packer_image" "hashicups_west" {
@@ -41,7 +41,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "loki" {
-  ami           = data.hcp_packer_image.loki.id
+  ami           = data.hcp_packer_image.loki.cloud_image_id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet_public_east.id
   vpc_security_group_ids = [

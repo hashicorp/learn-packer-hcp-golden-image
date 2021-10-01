@@ -58,7 +58,7 @@ resource "aws_instance" "loki" {
 
 /*
 resource "aws_instance" "hashicups_east" {
-  ami           = data.hcp_packer_image.hashicups_east.id
+  ami           = data.hcp_packer_image.hashicups_east.cloud_image_id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet_public_east.id
   vpc_security_group_ids = [
@@ -80,7 +80,7 @@ resource "aws_instance" "hashicups_east" {
 
 resource "aws_instance" "hashicups_west" {
   provider      = aws.west
-  ami           = data.hcp_packer_image.hashicups_west.id
+  ami           = data.hcp_packer_image.hashicups_west.cloud_image_id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet_public_west.id
   vpc_security_group_ids = [

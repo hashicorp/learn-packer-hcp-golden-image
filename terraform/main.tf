@@ -41,7 +41,7 @@ provider "aws" {
 }
 
 resource "aws_instance" "loki" {
-  ami           = data.hcp_packer_image.loki.id
+  ami           = data.hcp_packer_image.loki.cloud_image_id
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.subnet_public_east.id
   vpc_security_group_ids = [

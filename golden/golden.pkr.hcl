@@ -1,7 +1,7 @@
 packer {
   required_plugins {
     amazon = {
-      version = ">= 1.0.1-dev"
+      version = ">= 1.0.1"
       source  = "github.com/hashicorp/amazon"
     }
   }
@@ -30,6 +30,13 @@ source "amazon-ebs" "base_east" {
     owners      = ["099720109477"]
   }
   ssh_username = "ubuntu"
+  tags = {
+    Name          = "learn-hcp-packer-base-east"
+    environment   = "production"
+  }
+  snapshot_tags = {
+    environment   = "production"
+  }
 }
 
 source "amazon-ebs" "base_west" {
@@ -46,6 +53,13 @@ source "amazon-ebs" "base_west" {
     owners      = ["099720109477"]
   }
   ssh_username = "ubuntu"
+  tags = {
+    Name       = "learn-hcp-packer-base-west"
+    environment   = "production"
+  }
+  snapshot_tags = {
+    environment   = "production"
+  }
 }
 
 build {

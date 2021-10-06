@@ -1,7 +1,7 @@
 packer {
   required_plugins {
     amazon = {
-      version = ">= 1.0.1-dev"
+      version = ">= 1.0.1"
       source  = "github.com/hashicorp/amazon"
     }
   }
@@ -41,6 +41,13 @@ source "amazon-ebs" "hashicups_east" {
   region        = "us-east-2"
   source_ami    = data.hcp-packer-image.golden_base_east.id
   ssh_username = "ubuntu"
+  tags = {
+    Name          = "learn-hcp-packer-hashicups-east"
+    environment   = "production"
+  }
+  snapshot_tags = {
+    environment   = "production"
+  }
 }
 
 source "amazon-ebs" "hashicups_west" {
@@ -49,6 +56,13 @@ source "amazon-ebs" "hashicups_west" {
   region        = "us-west-2"
   source_ami    = data.hcp-packer-image.golden_base_west.id
   ssh_username = "ubuntu"
+  tags = {
+    Name          = "learn-hcp-packer-hashicups-west"
+    environment   = "production"
+  }
+  snapshot_tags = {
+    environment   = "production"
+  }
 }
 
 build {

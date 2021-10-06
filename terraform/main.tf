@@ -12,6 +12,7 @@ data "hcp_packer_image" "loki" {
   region         = "us-east-2"
 }
 
+/*
 data "hcp_packer_image_iteration" "hashicups" {
   bucket_name = var.hcp_bucket_hashicups
   channel     = var.hcp_channel
@@ -30,11 +31,14 @@ data "hcp_packer_image" "hashicups_east" {
   iteration_id   = data.hcp_packer_image_iteration.hashicups.id
   region         = "us-east-2"
 }
+*/
 
 provider "aws" {
   region = var.region_east
 }
 
+# This provider is used to deploy resources to 
+# the us-west-2 region
 provider "aws" {
   alias  = "west"
   region = var.region_west

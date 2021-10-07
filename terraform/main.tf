@@ -1,6 +1,6 @@
 provider "hcp" {}
 
-data "hcp_packer_image_iteration" "loki" {
+data "hcp_packer_iteration" "loki" {
   bucket_name = var.hcp_bucket_loki
   channel     = var.hcp_channel
 }
@@ -8,12 +8,12 @@ data "hcp_packer_image_iteration" "loki" {
 data "hcp_packer_image" "loki" {
   bucket_name    = var.hcp_bucket_loki
   cloud_provider = "aws"
-  iteration_id   = data.hcp_packer_image_iteration.loki.id
+  iteration_id   = data.hcp_packer_iteration.loki.ulid
   region         = "us-east-2"
 }
 
 /*
-data "hcp_packer_image_iteration" "hashicups" {
+data "hcp_packer_iteration" "hashicups" {
   bucket_name = var.hcp_bucket_hashicups
   channel     = var.hcp_channel
 }
@@ -21,14 +21,14 @@ data "hcp_packer_image_iteration" "hashicups" {
 data "hcp_packer_image" "hashicups_west" {
   bucket_name    = var.hcp_bucket_hashicups
   cloud_provider = "aws"
-  iteration_id   = data.hcp_packer_image_iteration.hashicups.id
+  iteration_id   = data.hcp_packer_iteration.hashicups.ulid
   region         = "us-west-2"
 }
 
 data "hcp_packer_image" "hashicups_east" {
   bucket_name    = var.hcp_bucket_hashicups
   cloud_provider = "aws"
-  iteration_id   = data.hcp_packer_image_iteration.hashicups.id
+  iteration_id   = data.hcp_packer_iteration.hashicups.ulid
   region         = "us-east-2"
 }
 */

@@ -30,6 +30,13 @@ source "amazon-ebs" "base" {
     owners      = ["099720109477"]
   }
   ssh_username = "ubuntu"
+  tags = {
+    Name          = "learn-hcp-packer-loki"
+    environment   = "production"
+  }
+  snapshot_tags = {
+    environment   = "production"
+  }
 }
 
 build {

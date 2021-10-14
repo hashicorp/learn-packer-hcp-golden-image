@@ -13,22 +13,22 @@ variable "ami_prefix" {
 }
 
 data "hcp-packer-iteration" "golden" {
-  bucket_name = "learn-packer-hcp-golden-base-image"
-  channel = "production"
+  bucket_name     = "learn-packer-hcp-golden-base-image"
+  channel         = "production"
 }
 
 data "hcp-packer-image" "golden_base_east" {
-  bucket_name = "learn-packer-hcp-golden-base-image"
-  iteration_id = data.hcp-packer-iteration.golden.id
-  cloud_provider = "aws"
-  region = "us-east-2"
+  bucket_name     = data.hcp-packer-iteration.golden.bucket_name
+  iteration_id    = data.hcp-packer-iteration.golden.id
+  cloud_provider  = "aws"
+  region          = "us-east-2"
 }
 
 data "hcp-packer-image" "golden_base_west" {
-  bucket_name = "learn-packer-hcp-golden-base-image"
-  iteration_id = data.hcp-packer-iteration.golden.id
-  cloud_provider = "aws"
-  region = "us-west-2"
+  bucket_name      = data.hcp-packer-iteration.golden.bucket_name
+  iteration_id     = data.hcp-packer-iteration.golden.id
+  cloud_provider   = "aws"
+  region           = "us-west-2"
 }
 
 locals {

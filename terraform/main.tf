@@ -6,9 +6,9 @@ data "hcp_packer_iteration" "loki" {
 }
 
 data "hcp_packer_image" "loki" {
-  bucket_name    = var.hcp_bucket_loki
-  cloud_provider = "aws"
+  bucket_name    = data.hcp_packer_iteration.loki.bucket_name
   iteration_id   = data.hcp_packer_iteration.loki.ulid
+  cloud_provider = "aws"
   region         = "us-east-2"
 }
 

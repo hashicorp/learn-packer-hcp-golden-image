@@ -11,8 +11,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.60.0 |
-| <a name="provider_aws.west"></a> [aws.west](#provider\_aws.west) | 3.60.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 3.0 |
+| <a name="provider_aws.west"></a> [aws.west](#provider\_aws.west) | ~> 3.0 |
 | <a name="provider_hcp"></a> [hcp](#provider\_hcp) | 0.17.0 |
 
 ## Modules
@@ -44,11 +44,8 @@ No modules.
 | [aws_subnet.subnet_public_west](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_vpc.vpc_east](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [aws_vpc.vpc_west](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
-| [hcp_packer_image.hashicups_east](https://registry.terraform.io/providers/hashicorp/hcp/0.17.0/docs/data-sources/packer_image) | data source |
-| [hcp_packer_image.hashicups_west](https://registry.terraform.io/providers/hashicorp/hcp/0.17.0/docs/data-sources/packer_image) | data source |
 | [hcp_packer_image.loki](https://registry.terraform.io/providers/hashicorp/hcp/0.17.0/docs/data-sources/packer_image) | data source |
-| [hcp_packer_image_iteration.hashicups](https://registry.terraform.io/providers/hashicorp/hcp/0.17.0/docs/data-sources/packer_image_iteration) | data source |
-| [hcp_packer_image_iteration.loki](https://registry.terraform.io/providers/hashicorp/hcp/0.17.0/docs/data-sources/packer_image_iteration) | data source |
+| [hcp_packer_iteration.loki](https://registry.terraform.io/providers/hashicorp/hcp/0.17.0/docs/data-sources/packer_iteration) | data source |
 
 ## Inputs
 

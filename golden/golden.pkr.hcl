@@ -16,49 +16,55 @@ locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
 
+data "amazon-ami" "ubuntu-focal-east" {
+  region = "us-east-2"
+  filters = {
+    name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+    root-device-type    = "ebs"
+    virtualization-type = "hvm"
+  }
+  most_recent = true
+  owners      = ["099720109477"]
+}
+
 source "amazon-ebs" "base_east" {
   ami_name      = "${var.ami_prefix}-${local.timestamp}"
   instance_type = "t2.micro"
   region        = "us-east-2"
-  source_ami_filter {
-    filters = {
-      name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
-      root-device-type    = "ebs"
-      virtualization-type = "hvm"
-    }
-    most_recent = true
-    owners      = ["099720109477"]
-  }
-  ssh_username = "ubuntu"
+  source_ami    = data.amazon-ami.ubuntu-focal-east.id
+  ssh_username  = "ubuntu"
   tags = {
-    Name          = "learn-hcp-packer-base-east"
-    environment   = "production"
+    Name        = "learn-hcp-packer-base-east"
+    environment = "production"
   }
   snapshot_tags = {
-    environment   = "production"
+    environment = "production"
   }
+}
+
+data "amazon-ami" "ubuntu-focal-west" {
+  region = "us-west-2"
+  filters = {
+    name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+    root-device-type    = "ebs"
+    virtualization-type = "hvm"
+  }
+  most_recent = true
+  owners      = ["099720109477"]
 }
 
 source "amazon-ebs" "base_west" {
   ami_name      = "${var.ami_prefix}-${local.timestamp}"
   instance_type = "t2.micro"
   region        = "us-west-2"
-  source_ami_filter {
-    filters = {
-      name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
-      root-device-type    = "ebs"
-      virtualization-type = "hvm"
-    }
-    most_recent = true
-    owners      = ["099720109477"]
-  }
-  ssh_username = "ubuntu"
+  source_ami    = data.amazon-ami.ubuntu-focal-west.id
+  ssh_username  = "ubuntu"
   tags = {
-    Name       = "learn-hcp-packer-base-west"
-    environment   = "production"
+    Name        = "learn-hcp-packer-base-west"
+    environment = "production"
   }
   snapshot_tags = {
-    environment   = "production"
+    environment = "production"
   }
 }
 
@@ -107,7 +113,7 @@ build {
   }
 
   # Move temp files to actual destination
-  # Must use this method because their destinations are protected 
+  # Must use this method because their destinations are protected
   provisioner "shell" {
     inline = [
       "sudo cp /tmp/audit.rules /etc/audit/rules.d/audit.rules",

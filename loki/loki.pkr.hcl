@@ -16,26 +16,29 @@ locals {
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
 
+data "amazon-ami" "ubuntu-focal" {
+  region = "us-east-2"
+  filters = {
+    name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
+    root-device-type    = "ebs"
+    virtualization-type = "hvm"
+  }
+  most_recent = true
+  owners      = ["099720109477"]
+}
+
 source "amazon-ebs" "base" {
   ami_name      = "${var.ami_prefix}-${local.timestamp}"
   instance_type = "t2.micro"
   region        = "us-east-2"
-  source_ami_filter {
-    filters = {
-      name                = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
-      root-device-type    = "ebs"
-      virtualization-type = "hvm"
-    }
-    most_recent = true
-    owners      = ["099720109477"]
-  }
-  ssh_username = "ubuntu"
+  source_ami    = data.amazon-ami.ubuntu-focal.id
+  ssh_username  = "ubuntu"
   tags = {
-    Name          = "learn-hcp-packer-loki"
-    environment   = "production"
+    Name        = "learn-hcp-packer-loki"
+    environment = "production"
   }
   snapshot_tags = {
-    environment   = "production"
+    environment = "production"
   }
 }
 
@@ -71,7 +74,7 @@ build {
   }
 
   # Move temp files to actual destination
-  # Must use this method because their destinations are protected 
+  # Must use this method because their destinations are protected
   provisioner "shell" {
     inline = [
       "sudo cp /tmp/start-loki-grafana.sh /var/lib/cloud/scripts/per-boot/start-loki-grafana.sh",
@@ -87,8 +90,8 @@ This is an image for loki built on top of ubuntu 20.04.
     EOT
 
     labels = {
-      "hashicorp-learn"       = "learn-packer-hcp-loki-image",
-      "ubuntu-version"        = "20.04"
+      "hashicorp-learn" = "learn-packer-hcp-loki-image",
+      "ubuntu-version"  = "20.04"
     }
   }
 }

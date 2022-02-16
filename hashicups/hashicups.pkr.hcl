@@ -111,7 +111,7 @@ build {
 This is an image for hashicups built on top of a golden base image.
     EOT
 
-    labels = {
+    bucket_labels = {
       "hashicorp-learn"       = "learn-packer-hcp-hashicups-image",
     }
   }

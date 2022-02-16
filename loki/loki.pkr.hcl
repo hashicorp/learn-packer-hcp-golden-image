@@ -89,7 +89,7 @@ build {
 This is an image for loki built on top of ubuntu 20.04.
     EOT
 
-    labels = {
+    bucket_labels = {
       "hashicorp-learn" = "learn-packer-hcp-loki-image",
       "ubuntu-version"  = "20.04"
     }

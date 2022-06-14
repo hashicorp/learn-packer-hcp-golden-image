@@ -10,12 +10,4 @@ terraform {
       version = "0.17.0"
     }
   }
-
-  cloud {
-    hostname = "app.terraform.io"
-
-    workspaces {
-      name = "learn-hcp-packer-golden-image"
-    }
-  }
 }

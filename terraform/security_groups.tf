@@ -74,8 +74,8 @@ resource "aws_security_group" "loki_grafana_east" {
 # us-west-2 region
 resource "aws_security_group" "ssh_west" {
   provider = aws.west
-  name     = "ssh_22"
-  vpc_id   = aws_vpc.vpc_west.id
+  name   = "ssh_22"
+  vpc_id = aws_vpc.vpc_west.id
 
   # SSH access from the VPC
   ingress {
@@ -88,8 +88,8 @@ resource "aws_security_group" "ssh_west" {
 
 resource "aws_security_group" "allow_egress_west" {
   provider = aws.west
-  name     = "allow_egress"
-  vpc_id   = aws_vpc.vpc_west.id
+  name   = "allow_egress"
+  vpc_id = aws_vpc.vpc_west.id
 
   egress {
     from_port   = 0
@@ -101,8 +101,8 @@ resource "aws_security_group" "allow_egress_west" {
 
 resource "aws_security_group" "promtail_west" {
   provider = aws.west
-  name     = "promtail_9800"
-  vpc_id   = aws_vpc.vpc_west.id
+  name   = "promtail_9800"
+  vpc_id = aws_vpc.vpc_west.id
 
   ingress {
     from_port   = 9800
@@ -118,8 +118,8 @@ resource "aws_security_group" "promtail_west" {
 
 resource "aws_security_group" "hashicups_west" {
   provider = aws.west
-  name     = "hashicups_19090"
-  vpc_id   = aws_vpc.vpc_west.id
+  name   = "hashicups_19090"
+  vpc_id = aws_vpc.vpc_west.id
 
   ingress {
     from_port   = 19090
@@ -131,8 +131,8 @@ resource "aws_security_group" "hashicups_west" {
 
 resource "aws_security_group" "loki_grafana_west" {
   provider = aws.west
-  name     = "loki_grafana_3100_3000"
-  vpc_id   = aws_vpc.vpc_west.id
+  name   = "loki_grafana_3100_3000"
+  vpc_id = aws_vpc.vpc_west.id
 
   ingress {
     from_port   = 3100

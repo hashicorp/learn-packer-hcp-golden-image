@@ -10,8 +10,8 @@ resource "aws_internet_gateway" "igw_east" {
 }
 
 resource "aws_subnet" "subnet_public_east" {
-  vpc_id            = aws_vpc.vpc_east.id
-  cidr_block        = var.cidr_subnet_east
+  vpc_id     = aws_vpc.vpc_east.id
+  cidr_block = var.cidr_subnet_east
   availability_zone = "us-east-2a"
 }
 
@@ -39,19 +39,19 @@ resource "aws_vpc" "vpc_west" {
 
 resource "aws_internet_gateway" "igw_west" {
   provider = aws.west
-  vpc_id   = aws_vpc.vpc_west.id
+  vpc_id = aws_vpc.vpc_west.id
 }
 
 resource "aws_subnet" "subnet_public_west" {
-  provider          = aws.west
-  vpc_id            = aws_vpc.vpc_west.id
-  cidr_block        = var.cidr_subnet_west
+  provider = aws.west
+  vpc_id     = aws_vpc.vpc_west.id
+  cidr_block = var.cidr_subnet_west
   availability_zone = "us-west-2a"
 }
 
 resource "aws_route_table" "rtb_public_west" {
   provider = aws.west
-  vpc_id   = aws_vpc.vpc_west.id
+  vpc_id = aws_vpc.vpc_west.id
 
   route {
     cidr_block = "0.0.0.0/0"
@@ -60,7 +60,7 @@ resource "aws_route_table" "rtb_public_west" {
 }
 
 resource "aws_route_table_association" "rta_subnet_public_west" {
-  provider       = aws.west
+  provider = aws.west
   subnet_id      = aws_subnet.subnet_public_west.id
   route_table_id = aws_route_table.rtb_public_west.id
 }

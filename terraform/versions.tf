@@ -6,13 +6,13 @@ terraform {
       version = "~> 3.0"
     }
     hcp = {
-      source = "hashicorp/hcp"
+      source  = "hashicorp/hcp"
       version = "0.17.0"
     }
   }
 
-cloud {
-    hostname     = "app.terraform.io"
+  cloud {
+    hostname = "app.terraform.io"
 
     workspaces {
       name = "learn-hcp-packer-golden-image"

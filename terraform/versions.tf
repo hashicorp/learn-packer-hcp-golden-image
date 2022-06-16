@@ -11,7 +11,7 @@ terraform {
     }
   }
 
-cloud {
+  cloud {
     hostname = "app.terraform.io"
 
     workspaces {

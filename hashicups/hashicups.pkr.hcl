@@ -12,41 +12,41 @@ variable "ami_prefix" {
   default = "learn-packer-hcp-hashicups"
 }
 
-data "hcp-packer-iteration" "golden" {
-  bucket_name     = "learn-packer-hcp-golden-base-image"
-  channel         = "production"
+data "hcp-packer-version" "golden" {
+  bucket_name  = "learn-packer-hcp-golden-base-image"
+  channel_name = "production"
 }
 
-data "hcp-packer-image" "golden_base_east" {
-  bucket_name     = data.hcp-packer-iteration.golden.bucket_name
-  iteration_id    = data.hcp-packer-iteration.golden.id
-  cloud_provider  = "aws"
-  region          = "us-east-2"
+data "hcp-packer-artifact" "golden_base_east" {
+  bucket_name         = data.hcp-packer-version.golden.bucket_name
+  version_fingerprint = data.hcp-packer-version.golden.fingerprint
+  platform            = "aws"
+  region              = "us-east-2"
 }
 
-data "hcp-packer-image" "golden_base_west" {
-  bucket_name      = data.hcp-packer-iteration.golden.bucket_name
-  iteration_id     = data.hcp-packer-iteration.golden.id
-  cloud_provider   = "aws"
-  region           = "us-west-2"
+data "hcp-packer-artifact" "golden_base_west" {
+  bucket_name         = data.hcp-packer-version.golden.bucket_name
+  version_fingerprint = data.hcp-packer-version.golden.fingerprint
+  platform            = "aws"
+  region              = "us-west-2"
 }
 
 locals {
-  timestamp           = regex_replace(timestamp(), "[- TZ:]", "")
+  timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 }
 
 source "amazon-ebs" "hashicups_east" {
   ami_name      = "${var.ami_prefix}-${local.timestamp}"
   instance_type = "t2.micro"
   region        = "us-east-2"
-  source_ami    = data.hcp-packer-image.golden_base_east.id
-  ssh_username = "ubuntu"
+  source_ami    = data.hcp-packer-artifact.golden_base_east.external_identifier
+  ssh_username  = "ubuntu"
   tags = {
-    Name          = "learn-hcp-packer-hashicups-east"
-    environment   = "production"
+    Name        = "learn-hcp-packer-hashicups-east"
+    environment = "production"
   }
   snapshot_tags = {
-    environment   = "production"
+    environment = "production"
   }
 }
 
@@ -54,14 +54,14 @@ source "amazon-ebs" "hashicups_west" {
   ami_name      = "${var.ami_prefix}-${local.timestamp}"
   instance_type = "t2.micro"
   region        = "us-west-2"
-  source_ami    = data.hcp-packer-image.golden_base_west.id
-  ssh_username = "ubuntu"
+  source_ami    = data.hcp-packer-artifact.golden_base_west.external_identifier
+  ssh_username  = "ubuntu"
   tags = {
-    Name          = "learn-hcp-packer-hashicups-west"
-    environment   = "production"
+    Name        = "learn-hcp-packer-hashicups-west"
+    environment = "production"
   }
   snapshot_tags = {
-    environment   = "production"
+    environment = "production"
   }
 }
 
@@ -112,7 +112,7 @@ This is an image for hashicups built on top of a golden base image.
     EOT
 
     bucket_labels = {
-      "hashicorp-learn"       = "learn-packer-hcp-hashicups-image",
+      "hashicorp-learn" = "learn-packer-hcp-hashicups-image",
     }
   }
 }

@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 # us-east-2 region
 resource "aws_security_group" "ssh_east" {
   name   = "ssh_22"

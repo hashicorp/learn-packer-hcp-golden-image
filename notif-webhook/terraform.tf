@@ -1,22 +1,20 @@
 terraform {
-  required_version = ">= 0.13"
+  required_version = "~>1.1"
+
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.0"
+      version = "~> 5.49.0"
     }
     hcp = {
       source  = "hashicorp/hcp"
-      version = "0.82.0"
+      version = "~> 0.88.0"
     }
   }
 
   cloud {
-    hostname = "app.terraform.io"
-
     workspaces {
-      name = "learn-hcp-packer-golden-image"
+      name = "learn-hcp-packer-golden-image-webhook-rln"
     }
   }
 }
-

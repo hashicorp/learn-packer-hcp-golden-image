@@ -7,7 +7,8 @@ data "hcp_packer_version" "loki" {
 
 data "hcp_packer_artifact" "loki" {
   bucket_name         = data.hcp_packer_version.loki.bucket_name
-  version_fingerprint = data.hcp_packer_version.loki.fingerprint
+  channel_name        = var.hcp_channel
+#  version_fingerprint = data.hcp_packer_version.loki.fingerprint
   platform            = "aws"
   region              = "us-east-2"
 }

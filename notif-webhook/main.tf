@@ -11,6 +11,8 @@ provider "aws" {
 }
 
 resource "hcp_notifications_webhook" "version_events_webhook" {
+  depends_on = [time_sleep.wait_10_seconds]
+
   name        = "packer-events-webhook"
   description = "Notify for all of the events for all Packer artifact versions existing in the project."
 
@@ -28,6 +30,12 @@ resource "hcp_notifications_webhook" "version_events_webhook" {
       ]
     }
   ]
+}
+
+resource "time_sleep" "wait_10_seconds" {
+  depends_on = [aws_apigatewayv2_route.version_events_webhook]
+
+  create_duration = "10s"
 }
 
 data "archive_file" "version_events_webhook" {

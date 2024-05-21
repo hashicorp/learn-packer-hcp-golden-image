@@ -1,5 +1,6 @@
 output "gateway" {
   description = "URL of the webhook endpoint"
+
   value       = aws_apigatewayv2_api.version_events_webhook.api_endpoint
 }
 
@@ -14,4 +15,3 @@ output "function_name" {
 
   value = aws_lambda_function.version_events_webhook.function_name
 }
-

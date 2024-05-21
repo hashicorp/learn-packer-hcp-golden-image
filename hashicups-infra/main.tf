@@ -14,6 +14,12 @@ data "hcp_packer_artifact" "loki" {
 
 provider "aws" {
   region = var.region_east
+
+  default_tags {
+    tags = {
+      hashicorp-learn = "learn-packer-hcp-golden-image"
+    }
+  }
 }
 
 # This provider is used to deploy resources to 
@@ -21,6 +27,12 @@ provider "aws" {
 provider "aws" {
   alias  = "west"
   region = var.region_west
+
+  default_tags {
+    tags = {
+      hashicorp-learn = "learn-packer-hcp-golden-image"
+    }
+  }
 }
 
 resource "aws_instance" "loki" {

@@ -6,10 +6,10 @@ data "hcp_packer_version" "loki" {
 }
 
 data "hcp_packer_artifact" "loki" {
-  bucket_name         = data.hcp_packer_version.loki.bucket_name
-  channel_name        = var.hcp_channel
-  platform            = "aws"
-  region              = var.region_east
+  bucket_name  = data.hcp_packer_version.loki.bucket_name
+  channel_name = var.hcp_channel
+  platform     = "aws"
+  region       = var.region_east
 }
 
 provider "aws" {
@@ -45,17 +45,17 @@ data "hcp_packer_version" "hashicups" {
 }
 
 data "hcp_packer_artifact" "hashicups_west" {
-  bucket_name         = data.hcp_packer_version.hashicups.bucket_name
-  channel_name        = var.hcp_channel
-  platform            = "aws"
-  region              = var.region_west
+  bucket_name  = data.hcp_packer_version.hashicups.bucket_name
+  channel_name = var.hcp_channel
+  platform     = "aws"
+  region       = var.region_west
 }
 
 data "hcp_packer_artifact" "hashicups_east" {
-  bucket_name         = data.hcp_packer_version.hashicups.bucket_name
-  channel_name        = var.hcp_channel
-  platform            = "aws"
-  region              = var.region_east
+  bucket_name  = data.hcp_packer_version.hashicups.bucket_name
+  channel_name = var.hcp_channel
+  platform     = "aws"
+  region       = var.region_east
 }
 
 resource "aws_instance" "hashicups_east" {

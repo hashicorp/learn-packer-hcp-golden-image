@@ -14,21 +14,21 @@ output "loki_url" {
 }
 
 output "hashicups_east_ip" {
-  value = aws_instance.hashicups_east.public_ip
+  value       = aws_instance.hashicups_east.public_ip
   description = "Public IP address for the HashiCups instance in us-east-2."
 }
 
 output "hashicups_west_ip" {
-  value = aws_instance.hashicups_west.public_ip
+  value       = aws_instance.hashicups_west.public_ip
   description = "Public IP address for the HashiCups instance in us-west-2."
 }
 
 output "hashicups_east_url" {
-  value = "http://${aws_instance.hashicups_east.public_ip}:19090"
+  value       = "http://${aws_instance.hashicups_east.public_ip}:19090"
   description = "Public URL address for the HashiCups instance in us-east-2."
 }
 
 output "hashicups_west_url" {
-  value = "http://${aws_instance.hashicups_west.public_ip}:19090"
+  value       = "http://${aws_instance.hashicups_west.public_ip}:19090"
   description = "Public IP address for the HashiCups instance in us-west-2."
 }

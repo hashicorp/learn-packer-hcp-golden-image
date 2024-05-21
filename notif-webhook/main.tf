@@ -51,13 +51,13 @@ resource "aws_lambda_function" "version_events_webhook" {
   source_code_hash = data.archive_file.version_events_webhook.output_base64sha256
   role             = aws_iam_role.version_events_webhook.arn
 
-  handler          = "lambda.handler"
-  runtime          = "python3.9"
+  handler = "lambda.handler"
+  runtime = "python3.9"
 
   environment {
     variables = {
-      "S3_BUCKET_ARN": aws_s3_bucket.version_events_webhook_output.arn,
-      "S3_BUCKET_NAME": aws_s3_bucket.version_events_webhook_output.bucket
+      "S3_BUCKET_ARN" : aws_s3_bucket.version_events_webhook_output.arn,
+      "S3_BUCKET_NAME" : aws_s3_bucket.version_events_webhook_output.bucket
     }
   }
 }
@@ -98,16 +98,16 @@ resource "aws_apigatewayv2_stage" "version_events_webhook" {
 }
 
 resource "aws_cloudwatch_log_group" "version_events_webhook" {
-  name = "/aws/api_gw/${aws_apigatewayv2_api.version_events_webhook.name}"
+  name              = "/aws/api_gw/${aws_apigatewayv2_api.version_events_webhook.name}"
   retention_in_days = 30
 }
 
 resource "aws_apigatewayv2_integration" "version_events_webhook" {
-  api_id           = aws_apigatewayv2_api.version_events_webhook.id
-  integration_type = "AWS_PROXY"
+  api_id             = aws_apigatewayv2_api.version_events_webhook.id
+  integration_type   = "AWS_PROXY"
   integration_method = "POST"
 
-  integration_uri    = aws_lambda_function.version_events_webhook.invoke_arn
+  integration_uri = aws_lambda_function.version_events_webhook.invoke_arn
 }
 
 resource "aws_lambda_permission" "version_events_webhook" {

@@ -63,6 +63,28 @@ resource "aws_instance" "loki" {
 #   region       = var.region_west
 # }
 
+# resource "aws_instance" "hashicups_west" {
+#   provider      = aws.west
+#   ami           = data.hcp_packer_artifact.hashicups_west.external_identifier
+#   instance_type = "t2.micro"
+#   subnet_id     = aws_subnet.subnet_public_west.id
+#   vpc_security_group_ids = [
+#     aws_security_group.ssh_west.id,
+#     aws_security_group.allow_egress_west.id,
+#     aws_security_group.promtail_west.id,
+#     aws_security_group.hashicups_west.id,
+#   ]
+#   associate_public_ip_address = true
+
+#   tags = {
+#     Name = "Learn-Packer-HashiCups"
+#   }
+
+#   depends_on = [
+#     aws_instance.loki
+#   ]
+# }
+
 # data "hcp_packer_artifact" "hashicups_east" {
 #   bucket_name  = data.hcp_packer_version.hashicups.bucket_name
 #   channel_name = var.hcp_channel
@@ -91,24 +113,3 @@ resource "aws_instance" "loki" {
 #   ]
 # }
 
-# resource "aws_instance" "hashicups_west" {
-#   provider      = aws.west
-#   ami           = data.hcp_packer_artifact.hashicups_west.external_identifier
-#   instance_type = "t2.micro"
-#   subnet_id     = aws_subnet.subnet_public_west.id
-#   vpc_security_group_ids = [
-#     aws_security_group.ssh_west.id,
-#     aws_security_group.allow_egress_west.id,
-#     aws_security_group.promtail_west.id,
-#     aws_security_group.hashicups_west.id,
-#   ]
-#   associate_public_ip_address = true
-
-#   tags = {
-#     Name = "Learn-Packer-HashiCups"
-#   }
-
-#   depends_on = [
-#     aws_instance.loki
-#   ]
-# }

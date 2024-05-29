@@ -1,17 +1,5 @@
 provider "hcp" {}
 
-data "hcp_packer_version" "loki" {
-  bucket_name  = var.hcp_bucket_loki
-  channel_name = var.hcp_channel
-}
-
-data "hcp_packer_artifact" "loki" {
-  bucket_name  = data.hcp_packer_version.loki.bucket_name
-  channel_name = var.hcp_channel
-  platform     = "aws"
-  region       = var.region_east
-}
-
 provider "aws" {
   region = var.region_east
 
@@ -33,6 +21,18 @@ provider "aws" {
       hashicorp-learn = "learn-packer-hcp-golden-image"
     }
   }
+}
+
+data "hcp_packer_version" "loki" {
+  bucket_name  = var.hcp_bucket_loki
+  channel_name = var.hcp_channel
+}
+
+data "hcp_packer_artifact" "loki" {
+  bucket_name  = data.hcp_packer_version.loki.bucket_name
+  channel_name = var.hcp_channel
+  platform     = "aws"
+  region       = var.region_east
 }
 
 resource "aws_instance" "loki" {

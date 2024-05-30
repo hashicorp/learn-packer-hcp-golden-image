@@ -14,8 +14,8 @@ terraform {
 
   cloud {
     workspaces {
-      project = "hashidays-golden-image-lab-rln"
-      name    = "learn-hcp-packer-golden-image-webhook-rln"
+      project = "hashidays-golden-image-lab"
+      name    = "learn-hcp-packer-golden-image-webhook"
     }
   }
 }

@@ -1,3 +1,6 @@
+# Copyright (c) HashiCorp, Inc.
+# SPDX-License-Identifier: MPL-2.0
+
 output "gateway" {
   description = "URL of the webhook endpoint"
 

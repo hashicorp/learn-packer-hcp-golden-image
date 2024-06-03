@@ -2,6 +2,7 @@ variable "cidr_vpc_east" {
   description = "CIDR block for the VPC"
   default     = "10.1.0.0/16"
 }
+
 variable "cidr_subnet_east" {
   description = "CIDR block for the subnet"
   default     = "10.1.0.0/24"
@@ -11,6 +12,7 @@ variable "cidr_vpc_west" {
   description = "CIDR block for the VPC"
   default     = "10.2.0.0/16"
 }
+
 variable "cidr_subnet_west" {
   description = "CIDR block for the subnet"
   default     = "10.2.0.0/24"
@@ -43,5 +45,5 @@ variable "hcp_bucket_hashicups" {
 
 variable "hcp_channel" {
   description = "HCP Packer channel name"
-  default     = "production"
+  default     = "Production"
 }

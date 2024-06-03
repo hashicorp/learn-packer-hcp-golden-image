@@ -1,7 +1,7 @@
 packer {
   required_plugins {
     amazon = {
-      version = ">= 1.0.2"
+      version = "~> 1.3.2"
       source  = "github.com/hashicorp/amazon"
     }
   }
@@ -14,7 +14,7 @@ variable "ami_prefix" {
 
 data "hcp-packer-version" "golden" {
   bucket_name  = "learn-packer-hcp-golden-base-image"
-  channel_name = "production"
+  channel_name = "Production"
 }
 
 data "hcp-packer-artifact" "golden_base_east" {

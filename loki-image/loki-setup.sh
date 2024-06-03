@@ -21,6 +21,6 @@ sudo chown -R terraform /home/terraform/.ssh
 sudo usermod --shell /bin/bash terraform
 
 # Install Loki
-curl -O -L "https://github.com/grafana/loki/releases/download/v2.3.0/loki-linux-amd64.zip"
+curl -O -L "https://github.com/grafana/loki/releases/download/v2.9.8/loki-linux-amd64.zip"
 unzip "loki-linux-amd64.zip"
 chmod a+x "loki-linux-amd64"
